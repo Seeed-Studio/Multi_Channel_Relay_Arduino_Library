@@ -52,6 +52,8 @@ void Multi_Channel_Relay::changeI2CAddress(uint8_t old_addr, uint8_t new_addr)
   Wire.write(CMD_SAVE_I2C_ADDR);
   Wire.write(new_addr);
   Wire.endTransmission();
+
+  device_address = new_addr;
 }
 
 uint8_t Multi_Channel_Relay::getChannelState(void)

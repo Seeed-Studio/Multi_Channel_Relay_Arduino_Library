@@ -9,7 +9,7 @@ This is the Arduino library for Seeed multi channel relay.
 
 ### How to use this library
 you can download from Arduino Library Manager or directlly download from this repository.
-Connect the 8-channel Solid state relay v1.0 to Arduino board's I2C port, compile and upload relay_control.ino. Open the serial monitor the relay should go as expected some massage should show as below:
+Connect the 8-channel Solid state relay v1.0 to Arduino board's I2C port, compile and upload eight_channel_relay_control.ino. Open the serial monitor the relay should go as expected some massage should show as below:
 
 ```
 Scanning...

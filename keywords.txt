@@ -1,0 +1,6 @@
+changeI2CAddress	KWYWORD2
+getChannelState	KWYWORD2
+getFirmwareVersion	KWYWORD2
+channelCtrl	KWYWORD2
+turn_on_channel	KWYWORD2
+turn_off_channel	KWYWORD2

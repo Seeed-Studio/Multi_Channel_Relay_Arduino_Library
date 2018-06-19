@@ -42,7 +42,7 @@ uint8_t Multi_Channel_Relay::getFirmwareVersion(void)
   Wire.endTransmission();
 
   Wire.requestFrom(device_address, 1);  
-  while(!Wire.available());
+  //while(!Wire.available());
   return Wire.read();
 }
 

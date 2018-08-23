@@ -49,7 +49,7 @@ void loop()
   relay.turn_off_channel(3);
   relay.turn_on_channel(4);  
   delay(500);
-  relay.turn_off_channel(8);
+  relay.turn_off_channel(4);
 
   relay.channelCtrl(CHANNLE1_BIT | 
                     CHANNLE2_BIT | 

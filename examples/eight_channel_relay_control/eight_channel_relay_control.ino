@@ -16,7 +16,7 @@ void setup()
   }
 
   Serial.println("Start write address");
-  relay.changeI2CAddress(0x11, old_address);  /* Set I2C address and save to Flash */  
+  relay.changeI2CAddress(old_address, 0x11);  /* Set I2C address and save to Flash */  
   Serial.println("End write address");
 
   /* Read firmware  version */

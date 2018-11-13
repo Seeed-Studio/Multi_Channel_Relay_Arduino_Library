@@ -22,12 +22,28 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#pragma once
 
 #ifndef MULTI_CHANNEL_RELAY_H
 #define MULTI_CHANNEL_RELAY_H
 
+// Architecture specific include
+#if defined(ARDUINO_ARCH_AVR)	
+	#define DEBUG_PRINT Serial
+#elif defined(ARDUINO_ARCH_SAM)	
+	#define DEBUG_PRINT SerialUSB
+#elif defined(ARDUINO_ARCH_SAMD)		
+	#define DEBUG_PRINT SerialUSB
+#elif defined(ARDUINO_ARCH_STM32F4)	
+	#define DEBUG_PRINT SerialUSB
+#else
+	#pragma message("Not match any architecture.")
+	#define DEBUG_PRINT Serial
+#endif
+
 #include <Arduino.h>
 #include <Wire.h>
+
 
 #define CHANNLE1_BIT  0x01
 #define CHANNLE2_BIT  0x02
@@ -45,8 +61,13 @@
 
 class Multi_Channel_Relay{
 	public: 		
-		Multi_Channel_Relay(uint8_t address = 0x11);
-		~Multi_Channel_Relay();
+		Multi_Channel_Relay();
+		
+		/**
+		 * Begin Multi Channel Relay by a I2C address.
+		 * @param address can be changed by changeI2CAddress. Please refer to example change_i2c_address	
+		*/
+		void begin(int address = 0x11);
 
 		/**
 		 * @brief Change device address from old_addr to new_addr. 
@@ -54,7 +75,7 @@ class Multi_Channel_Relay{
 							old_addr, the original address
 		 * @return None  
 		*/	
-		void changeI2CAddress(uint8_t new_addr, uint8_t old_addr = 0x11);
+		void changeI2CAddress(uint8_t new_addr, uint8_t old_addr);
 
 		/** 
 		 * /brief Get channel state
@@ -99,8 +120,8 @@ class Multi_Channel_Relay{
 		uint8_t scanI2CDevice(void);
 	
 	private:
-		uint8_t device_address;  //  This is the I2C address you want to use 
-		uint8_t channel_state;  // Value to save channel state
+		int _i2cAddr;  //  This is the I2C address you want to use 
+		int channel_state;  // Value to save channel state
 };
 
 

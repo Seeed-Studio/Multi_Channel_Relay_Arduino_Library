@@ -9,15 +9,22 @@ This is the Arduino library for Seeed multi channel relay.
 
 ### How to use this library
 you can download from Arduino Library Manager or directlly download from this repository.
-Connect the 8-channel Solid state relay v1.0 to Arduino board's I2C port, compile and upload eight_channel_relay_control.ino. Open the serial monitor the relay should go as expected some massage should show as below:
+Connect the 8-channel Solid state relay v1.0 to Arduino board's I2C port, compile and upload four_channel_relay_control.ino. Open the serial monitor the relay should go as expected some massage should show as below:
 
 ```
-Scanning...
-I2C device found at address 0x11  !
-Found 1 I2C devices
-Start write address
-End write address
-firmware version: 0x1
+Channel 1 on
+Channel 2 on
+Channel 3 on
+Channel 4 on
+Turn all channels on, State: 1111
+Turn 1 3 channels on, State: 101
+Turn 2 4 channels on, State: 1010
+Turn off all channels, State: 0
+```
+
+- Upload eight_channel_relay_control.ino, open the serial monitor and show the below logs:
+
+```
 Channel 1 on
 Channel 2 on
 Channel 3 on
@@ -30,6 +37,22 @@ Turn all channels on, State: 11111111
 Turn 1 3 5 7 channels on, State: 1010101
 Turn 2 4 6 8 channels on, State: 10101010
 Turn off all channels, State: 0
+
+```
+
+- This module can be set I2C address by software, open change_i2c_address.ino modify new_i2c_address as you want; compile and upload the sketch, open the serial monitor and show the below logs:
+
+```
+Scanning...
+I2C device found at address 0x11  !
+Found 1 devices
+Address 0x21 has been saved to flash.
+```
+
+- Read firmware version of the module by example read_firmware_version.ino. Serial logs as below:
+
+```
+firmware version: 0x1
 ```
 
 ### Functionalities

@@ -24,24 +24,26 @@
 
 #include <multi_channel_relay.h>
 
-Multi_Channel_Relay::Multi_Channel_Relay(uint8_t address)
+Multi_Channel_Relay::Multi_Channel_Relay()
 {
-	Wire.begin();
-	channel_state = 0;
-	device_address = address;
+
 }
 
-Multi_Channel_Relay::~Multi_Channel_Relay()
+void Multi_Channel_Relay::begin(int address)
 {
+  Wire.begin();  
+  channel_state = 0;
+	_i2cAddr = address;
+  
 }
 
 uint8_t Multi_Channel_Relay::getFirmwareVersion(void)
 {
-  Wire.beginTransmission(device_address);
+  Wire.beginTransmission(_i2cAddr);
   Wire.write(CMD_READ_FIRMWARE_VER);
   Wire.endTransmission();
 
-  Wire.requestFrom(device_address, 1);  
+  Wire.requestFrom(_i2cAddr, 1);  
   //while(!Wire.available());
   return Wire.read();
 }
@@ -53,7 +55,7 @@ void Multi_Channel_Relay::changeI2CAddress(uint8_t old_addr, uint8_t new_addr)
   Wire.write(new_addr);
   Wire.endTransmission();
 
-  device_address = new_addr;
+  _i2cAddr = new_addr;
 }
 
 uint8_t Multi_Channel_Relay::getChannelState(void)
@@ -65,7 +67,7 @@ void Multi_Channel_Relay::channelCtrl(uint8_t state)
 {
   channel_state = state;
 
-  Wire.beginTransmission(device_address); 
+  Wire.beginTransmission(_i2cAddr); 
   Wire.write(CMD_CHANNEL_CTRL);
   Wire.write(channel_state);
   Wire.endTransmission();
@@ -75,7 +77,7 @@ void Multi_Channel_Relay::turn_on_channel(uint8_t channel)
 {
   channel_state |= (1 << (channel-1));
 
-  Wire.beginTransmission(device_address); 
+  Wire.beginTransmission(_i2cAddr); 
   Wire.write(CMD_CHANNEL_CTRL);
   Wire.write(channel_state);
   Wire.endTransmission();
@@ -85,7 +87,7 @@ void Multi_Channel_Relay::turn_off_channel(uint8_t channel)
 {
   channel_state &= ~(1 << (channel-1));
   
-  Wire.beginTransmission(device_address); 
+  Wire.beginTransmission(_i2cAddr); 
   Wire.write(CMD_CHANNEL_CTRL);
   Wire.write(channel_state);
   Wire.endTransmission();
@@ -93,13 +95,13 @@ void Multi_Channel_Relay::turn_off_channel(uint8_t channel)
 
 uint8_t Multi_Channel_Relay::scanI2CDevice(void)
 {
-  byte error, address, result;
+  byte error = 0, address = 0, result = 0;
   int nDevices;
  
-  Serial.println("Scanning...");
+  DEBUG_PRINT.println("Scanning...");
  
   nDevices = 0;
-  for(address = 1; address < 127; address++ )
+  for(address = 1; address <= 127; address++ )
   {
     // The i2c_scanner uses the return value of
     // the Write.endTransmisstion to see if
@@ -110,32 +112,32 @@ uint8_t Multi_Channel_Relay::scanI2CDevice(void)
     if (error == 0)
     {
       result = address;
-      Serial.print("I2C device found at address 0x");
+      DEBUG_PRINT.print("I2C device found at address 0x");
       if (address<16)
-        Serial.print("0");
-      Serial.print(address,HEX);
-      Serial.println("  !");
+        DEBUG_PRINT.print("0");
+      DEBUG_PRINT.print(address,HEX);
+      DEBUG_PRINT.println("  !");
  
       nDevices++;
     }
     else if (error==4)
     {
-      Serial.print("Unknown error at address 0x");
+      DEBUG_PRINT.print("Unknown error at address 0x");
       if (address<16)
-        Serial.print("0");
-      Serial.println(address,HEX);
-    }    
+        DEBUG_PRINT.print("0");
+      DEBUG_PRINT.println(address,HEX);
+    }  
   }
   if (nDevices == 0) {
-    Serial.println("No I2C devices found\n");
+    DEBUG_PRINT.println("No I2C devices found\n");
     result = 0x00;
   }
   else {
-    Serial.print("Found ");
-    Serial.print(nDevices);
-    Serial.print(" I2C devices\n");
+    DEBUG_PRINT.print("Found ");
+    DEBUG_PRINT.print(nDevices);
+    DEBUG_PRINT.print(" devices\n");
     if(nDevices != 1) {
-      result = 0xFF;
+      result = 0x00;
     }
   }
 

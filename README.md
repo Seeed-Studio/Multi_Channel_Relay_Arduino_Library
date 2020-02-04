@@ -1,4 +1,4 @@
-# Multi_Channel_Relay_Arduino_Library
+# Multi_Channel_Relay_Arduino_Library  [![Build Status](https://travis-ci.com/Seeed-Studio/Multi_Channel_Relay_Arduino_Library.svg?branch=master)](https://travis-ci.com/Seeed-Studio/Multi_Channel_Relay_Arduino_Library)
 This is the Arduino library for Seeed multi channel relay. 
 
 <!-- <img src= width=400> -->
